@@ -29,12 +29,6 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
       final notification = event.notification;
       event.complete(notification);
 
-      if (kDebugMode){
-        print(notification.title);
-        print(notification.body);
-        print(notification.additionalData);
-      }
-
       if(_controller.hasListener){
         _controller.sink.add(notification);
       }
@@ -46,11 +40,13 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
     //Background y app terminated
     _oneSignal.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       final notification = result.notification;
+
+      if(result.action != null)
+        if(result.action!.type == OSNotificationActionType.actionTaken)
+          print("Dio click en boton");
       
-      if (kDebugMode){
-        print(notification.title);
-        print(notification.body);
-        print(notification.additionalData);
+      if(_controller.hasListener){
+        _controller.sink.add(notification);
       }
     });
 
