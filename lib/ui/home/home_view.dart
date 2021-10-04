@@ -5,6 +5,7 @@ import 'package:flutter_onsignal/ui/home/home_view_model.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
+  static const String routeName = "home";
   const HomeView({Key? key}) : super(key: key);
 
   @override

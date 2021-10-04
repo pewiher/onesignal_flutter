@@ -11,9 +11,13 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
   
   final OneSignal _oneSignal;
   final _controller = StreamController<OSNotification>.broadcast();
+  final _controllerInApp = StreamController<OSInAppMessageAction>.broadcast();
 
   @override
   Stream<OSNotification> get onNotification => _controller.stream;
+
+  @override
+  Stream<OSInAppMessageAction> get onInApp => _controllerInApp.stream;
 
 
   @override
@@ -40,10 +44,14 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
     //Background y app terminated
     _oneSignal.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       final notification = result.notification;
-
-      if(result.action != null)
-        if(result.action!.type == OSNotificationActionType.actionTaken)
-          print("Dio click en boton");
+      if(result.action != null){
+        if(result.action!.type == OSNotificationActionType.actionTaken){
+          print("Dio click en boton ${result.action?.actionId}");
+        } else {
+          print("Dio click en boton ${result.action?.actionId}");
+        }
+      }
+          
       
       if(_controller.hasListener){
         _controller.sink.add(notification);
@@ -67,11 +75,19 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
     //     // Will be called whenever then user's email subscription changes
     //     // (ie. OneSignal.setEmail(email) is called and the user gets registered
     // });
+
+    _oneSignal.setInAppMessageClickedHandler((action) {
+      print("Entro al boton ${action.clickName}"); //Action ID
+      
+      _controllerInApp.sink.add(action);
+    });
+    
   }
 
   @override
   void dispose(){
     _controller.close();
+    _controllerInApp.close();
   }
 
   @override

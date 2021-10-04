@@ -8,6 +8,7 @@ class HomeViewModel with ChangeNotifier {
 
   void init() {
     _oneSignalInitialUseCase.initOneSignal();
+    
   }
 
   Stream<OSNotification> getStream() => _oneSignalInitialUseCase.getOnNotification();
