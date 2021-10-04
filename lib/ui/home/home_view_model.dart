@@ -6,10 +6,5 @@ class HomeViewModel with ChangeNotifier {
   HomeViewModel(this._oneSignalInitialUseCase);
   final OneSignalInitialUseCase _oneSignalInitialUseCase;
 
-  void init() {
-    _oneSignalInitialUseCase.initOneSignal();
-    
-  }
-
   Stream<OSNotification> getStream() => _oneSignalInitialUseCase.getOnNotification();
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_onsignal/ui/home/home_view_model.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,13 +16,12 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
 
-  late  StreamSubscription _subScription;
+  late  StreamSubscription<OSNotification> _subScription;
   
   @override
   void initState() {
     super.initState();
     final viewModel = context.read<HomeViewModel>();
-    viewModel.init();
 
     _subScription = viewModel.getStream().listen((notification) {
       final snackBar = SnackBar(content: Text(notification.title ?? ""),);
@@ -29,6 +29,13 @@ class _HomeViewState extends State<HomeView> {
       
     });
 
+  }
+
+  @override
+  void dispose() {
+    _subScription.cancel();
+    super.dispose();
+    
   }
   @override
   Widget build(BuildContext context) {
