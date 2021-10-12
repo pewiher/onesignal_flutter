@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_onsignal/domain/usecases/onesignal_initial_usecase.dart';
 import 'package:flutter_onsignal/ui/home/home_view_model.dart';
+import 'package:flutter_onsignal/ui/other/other_view.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +28,7 @@ class _HomeViewState extends State<HomeView> {
     _subScription = viewModel.getStream().listen((notification) {
       final snackBar = SnackBar(content: Text(notification.title ?? ""),);
       ScaffoldMessenger.of(_globalKey.currentContext!).showSnackBar(snackBar);
-      
+      Navigator.pushNamed(_globalKey.currentContext!, OtherView.routeName);
     });
 
   }
@@ -39,8 +41,8 @@ class _HomeViewState extends State<HomeView> {
   }
   @override
   Widget build(BuildContext context) {
-    //final useCase = context.read<OneSignalInitialUseCase>();
-    //useCase.initOneSignal();
+    final useCase = context.read<OneSignalInitialUseCase>();
+    useCase.initOneSignal();
     
     return Scaffold(
       key: _globalKey,

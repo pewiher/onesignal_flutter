@@ -11,25 +11,30 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<SplashViewModel>();
-    viewModel.init(context);
+    
     return ChangeNotifierProvider(
       create: (context) => SplashViewModel(
         context.read<OneSignalInitialUseCase>(),
         
       )..init(context),
       child: Scaffold(
-        body: Container(
-          key: const ValueKey("splash"),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                CircularProgressIndicator(),
-                SizedBox(height: 20,),
-                Text("Cargando datos....")
-              ],
-            ),
-          ),
+        body: Builder(
+          builder: (context) {
+            viewModel.init(context);
+            return Container(
+              key: const ValueKey("splash"),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20,),
+                    Text("Cargando datos....")
+                  ],
+                ),
+              ),
+            );
+          }
         ),
       ),
     );

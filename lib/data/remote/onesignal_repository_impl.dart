@@ -90,8 +90,9 @@ class OneSignalRepositoryImpl implements OneSignalRepository {
     _controllerInApp.close();
   }
 
+
   @override
-  Future<Map<String, dynamic>> setUserId(String userId) {
+  Future<Map<String, dynamic>> setExternalUserId(String userId) {
     return _oneSignal.setExternalUserId(userId);
   }
 
